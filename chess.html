@@ -14,15 +14,17 @@
 		<script src="useScene.js"></script>
 		<script src="useChess.js"></script>
 		<script>
-			// Dichiaro le variabili che conterranno la scena, la telecamera, il renderer e il gestore di eventi DOM
-			var scene,camera,renderer,domEvents;
+			// Dichiaro le variabili che conterranno la scena, la telecamera, il renderer, il gestore di eventi DOM e il RayCaster per il rilevamento di collisioni
+			var scene,camera,renderer,domEvents,raycaster;
+			// Dichiaro un array contenente tutti i raggi necessari al RayCaster per rilevare eventuali collisioni con gli oggetti
+			var rays=[new THREE.Vector3(0, 0, 1),new THREE.Vector3(1, 0, 1),new THREE.Vector3(1, 0, 0),new THREE.Vector3(1, 0, -1),new THREE.Vector3(0, 0, -1),new THREE.Vector3(-1, 0, -1), new THREE.Vector3(-1, 0, 0),new THREE.Vector3(-1, 0, 1)];
 			// Dichiaro le variabili globali che contengono la scacchiera, le mosse possibili, i pezzi bianchi ed i pezzi neri
 			var plane=new Array(8);
 			var moves=new Array(8);
 			var white=new Array(16);
 			var black=new Array(16);
 			// Dichiaro una variabile globale per tenere traccia dell'ultimo pezzo cliccato, una per il turno degli scacchi, per l'oggetto interattivo della prima scena, per la modalità e per la rotazione della telecamera
-			var actual,cube,turn="e",mode=0;
+			var actual,chessboard,turn="e",mode=0;
 			var rotation=0,forward=15,lateral=0;
 			// Dichiaro due variabili contenitore che conterranno le due scene diverse
 			var room=new THREE.Object3D();
@@ -37,7 +39,7 @@
 				// Preparo la scena, la telecamera, il renderer ed il gestore di eventi DOM
 				scene=new THREE.Scene();
 				camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,1000);
-				camera.position.set(lateral,5,forward);
+				camera.position.set(lateral,0,forward);
 				camera.lookAt(scene.position);
 				scene.add(camera);
 				renderer=new THREE.WebGLRenderer();
@@ -45,16 +47,17 @@
 				document.body.appendChild(renderer.domElement);
 				renderer.setClearColorHex(0x777777,1);
 				document.body.appendChild(renderer.domElement);
+				raycaster=new THREE.Raycaster();
 				domEvents=new THREEx.DomEvents(camera,renderer.domElement);
 				// Creo la prima scena e ci collego un evento che mi consenta di passare alla seconda
 				//cube=new THREE.Mesh(new THREE.CubeGeometry(1,1,1),new THREE.MeshNormalMaterial());
 				var loader=new THREE.JSONLoader();
 				loader.load("Cup.js",function(geometry,materials) {
-					cube=new THREE.Mesh(geometry,new THREE.MeshNormalMaterial());
-					cube.scale.set(1,1,1);
-					cube.position.set(0,0,0);
-					domEvents.bind(cube,"click",function() {  switchScene(); });
-					room.add(cube);
+					chessboard=new THREE.Mesh(geometry,new THREE.MeshNormalMaterial());
+					chessboard.scale.set(1,1,1);
+					chessboard.position.set(0,0,0);
+					domEvents.bind(chessboard,"click",function() {  switchScene(); });
+					room.add(chessboard);
 				});
 				//room.add(cube);
 				scene.add(room);

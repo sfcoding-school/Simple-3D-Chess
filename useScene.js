@@ -10,7 +10,7 @@ function switchScene() {
 		fillBoard();
 		scene.remove(room);
 		scene.add(chess);
-		domEvents.unbind(cube,"click",function() { 	});
+		domEvents.unbind(chessboard,"click",function() { 	});
 		render();
 	} else {
 		// Svuoto eventuali pezzi rimasti dalla vecchia partita
@@ -28,10 +28,10 @@ function switchScene() {
 			}
 		// Riattivo la prima scena
 		mode=0;
-		camera.position.set(lateral,5,forward);
+		camera.position.set(lateral,0,forward);
 		camera.lookAt(scene.position);
 		turn="e";
-		domEvents.bind(cube,"click",function() { switchScene() });
+		domEvents.bind(chessboard,"click",function() { switchScene() });
 		scene.remove(chess);
 		scene.add(room);
 		render();
@@ -79,30 +79,90 @@ function cameraMove(key) {
 			break;
 		case 65:
 			if(mode==0) {
-				lateral-=0.5;
-				camera.position.x=lateral;
-				render();
+				var collide=false;
+				raycaster.set(camera.position,rays[3]);
+				var collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[4]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[5]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				if(!collide) {
+					lateral-=0.5;
+					camera.position.z=forward;
+					render();
+				}
 			}
 			break;
 		case 68:
 			if(mode==0) {
-				lateral+=0.5;
-				camera.position.x=lateral;
-				render();
+				var collide=false;
+				raycaster.set(camera.position,rays[1]);
+				var collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[2]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[3]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				if(!collide) {
+					lateral+=0.5;
+					camera.position.z=forward;
+					render();
+				}
 			}
 			break;
 		case 83:
 			if(mode==0) {
-				forward+=0.5;
-				camera.position.z=forward;
-				render();
+				var collide=false;
+				raycaster.set(camera.position,rays[0]);
+				var collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[1]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[7]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				if(!collide) {
+					forward+=0.5;
+					camera.position.z=forward;
+					render();
+				}
 			}
 			break;
 		case 87:
 			if(mode==0) {
-				forward-=0.5;
-				camera.position.z=forward;
-				render();
+				var collide=false;
+				raycaster.set(camera.position,rays[3]);
+				var collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[4]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				raycaster.set(camera.position,rays[5]);
+				collisions=raycaster.intersectObject(room,true);
+				if(collisions.length>0 && collisions[0].distance<2)
+					collide=true;
+				if(!collide) {
+					forward-=0.5;
+					camera.position.z=forward;
+					render();
+				}
 			}
 			break;
 	}
