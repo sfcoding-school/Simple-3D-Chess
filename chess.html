@@ -18,14 +18,17 @@
 			var scene,camera,renderer,domEvents,raycaster;
 			// Dichiaro un array contenente tutti i raggi necessari al RayCaster per rilevare eventuali collisioni con gli oggetti
 			var rays=[new THREE.Vector3(0, 0, 1),new THREE.Vector3(1, 0, 1),new THREE.Vector3(1, 0, 0),new THREE.Vector3(1, 0, -1),new THREE.Vector3(0, 0, -1),new THREE.Vector3(-1, 0, -1), new THREE.Vector3(-1, 0, 0),new THREE.Vector3(-1, 0, 1)];
+			// Dichiaro delle variabili che mi indicano se ho modificato un dato parametro della visuale
+			var moveForward=false,moveBackward=false,moveRight=false,moveLeft=false,rotateRight=false,rotateLeft=false,lookRight=false,lookLeft=false,lookAbove=false,lookBelow=false;
 			// Dichiaro le variabili globali che contengono la scacchiera, le mosse possibili, i pezzi bianchi ed i pezzi neri
 			var plane=new Array(8);
 			var moves=new Array(8);
 			var white=new Array(16);
 			var black=new Array(16);
-			// Dichiaro una variabile globale per tenere traccia dell'ultimo pezzo cliccato, una per il turno degli scacchi, per l'oggetto interattivo della prima scena, per la modalità e per la rotazione della telecamera
+			// Dichiaro una variabile globale per tenere traccia dell'ultimo pezzo cliccato, una per il turno degli scacchi, per l'oggetto interattivo della prima scena e per la modalità
 			var actual,chessboard,turn="e",mode=0;
-			var rotation=0,forward=15,lateral=0;
+			// Dichiaro variabili per tenere traccia dei movimenti della telecamera
+			var rotation=0,positionZ,positionX,angleX,angleY;
 			// Dichiaro due variabili contenitore che conterranno le due scene diverse
 			var room=new THREE.Object3D();
 			var chess=new THREE.Object3D();
@@ -36,10 +39,10 @@
 			
 			// La funzione che crea le due scenografie principali
 			function init() {
-				// Preparo la scena, la telecamera, il renderer ed il gestore di eventi DOM
+			// Preparo la scena, la telecamera, il renderer ed il gestore di eventi DOM
 				scene=new THREE.Scene();
 				camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,1000);
-				camera.position.set(lateral,0,forward);
+				camera.position.set(0,0,5);
 				camera.lookAt(scene.position);
 				scene.add(camera);
 				renderer=new THREE.WebGLRenderer();
@@ -49,8 +52,7 @@
 				document.body.appendChild(renderer.domElement);
 				raycaster=new THREE.Raycaster();
 				domEvents=new THREEx.DomEvents(camera,renderer.domElement);
-				// Creo la prima scena e ci collego un evento che mi consenta di passare alla seconda
-				//cube=new THREE.Mesh(new THREE.CubeGeometry(1,1,1),new THREE.MeshNormalMaterial());
+			// Creo la prima scena e ci collego un evento che mi consenta di passare alla seconda
 				var loader=new THREE.JSONLoader();
 				loader.load("Cup.js",function(geometry,materials) {
 					chessboard=new THREE.Mesh(geometry,new THREE.MeshNormalMaterial());
@@ -59,16 +61,13 @@
 					domEvents.bind(chessboard,"click",function() {  switchScene(); });
 					room.add(chessboard);
 				});
-				//room.add(cube);
 				scene.add(room);
-				
-				// Creo il bordo della schacchiera
+			// Creo il bordo della schacchiera
 				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshBasicMaterial({color:0x926239}));
 				border.position.set(0,-0.01,0);
 				border.rotation.x=-90*(Math.PI/180);
 				chess.add(border);
-				
-				// Creo i quadrati della scacchiera, segnandomi nel name il pezzo che c'è sopra
+			// Creo i quadrati della scacchiera, segnandomi nel name il pezzo che c'è sopra
 				var plane_geometry=new THREE.PlaneGeometry(1,1);
 				var white_material=new THREE.MeshBasicMaterial({color:"white"});
 				var black_material=new THREE.MeshBasicMaterial({color:"black"});
@@ -85,8 +84,7 @@
 						chess.add(plane[i][j]);
 					}
 				}
-				
-				// Creo i quadrati delle mosse, gli aggancio l'evento ma non li mostro, segnandomi nel name se sono attivi o no
+			// Creo i quadrati delle mosse, gli aggancio l'evento ma non li mostro, segnandomi nel name se sono attivi o no
 				var small_plane_geometry=new THREE.PlaneGeometry(0.9,0.9);
 				var red_material=new THREE.MeshBasicMaterial({color:"red"});
 				for(var i=0;i<8;i++) {
@@ -99,21 +97,21 @@
 						domEvents.bind(moves[i][j],"click",function(event) { moveTo(event.target); });
 					}
 				}
-				
-				// Creo un punto luce
+			// Creo un punto luce
 				var light=new THREE.PointLight(0xffffff,10,100);
 				light.position.x=2;
 				light.position.y=2;
 				light.position.z=2;
 				scene.add(light);
-				
-				// Creo un evento da tastiera per interrompere una partita e tornare alla prima scena
-				window.addEventListener("keydown",function(event) { cameraMove(event.keyCode) });
+			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera
+				window.addEventListener("keydown",function(event) { activateMove(event.keyCode) });
+				window.addEventListener("keyup",function(event) { deactivateMove(event.keyCode) });
 			}
-			
+	
 			// La funzione che esegue il render della scena
 			function render() {
 				requestAnimationFrame(render);
+				update();
 				renderer.render(scene,camera);
 			}
 		</script>
