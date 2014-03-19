@@ -47,33 +47,33 @@ function cameraMove(key) {
 			break;
 		case 37:
 			if(mode==1) {
-				rotation+=0.1;
+				rotation+=0.05;
 				camera.position.x=Math.sin(rotation)*10;
 				camera.position.z=Math.cos(rotation)*15;
 				camera.lookAt(scene.position);
 			} else
-				camera.rotation.y+=0.1;
+				camera.rotation.y+=0.05;
 			render();
 			break;
 		case 38:
 			if(mode==0) {
-				camera.rotation.x+=0.1;
+				camera.rotation.x+=0.05;
 				render();
 			}
 			break;
 		case 39:
 			if(mode==1) {
-				rotation-=0.1;
+				rotation-=0.05;
 				camera.position.x=Math.sin(rotation)*10;
 				camera.position.z=Math.cos(rotation)*15;
 				camera.lookAt(scene.position);
 			} else
-				camera.rotation.y-=0.1;
+				camera.rotation.y-=0.05;
 			render();
 			break;
 		case 40:
 			if(mode==0) {
-				camera.rotation.x-=0.1;
+				camera.rotation.x-=0.05;
 				render();
 			}
 			break;
@@ -93,7 +93,7 @@ function cameraMove(key) {
 				if(collisions.length>0 && collisions[0].distance<2)
 					collide=true;
 				if(!collide) {
-					lateral-=0.5;
+					lateral-=0.05;
 					camera.position.x=lateral;
 					render();
 				}
@@ -115,7 +115,7 @@ function cameraMove(key) {
 				if(collisions.length>0 && collisions[0].distance<2)
 					collide=true;
 				if(!collide) {
-					lateral+=0.5;
+					lateral+=0.05;
 					camera.position.x=lateral;
 					render();
 				}
@@ -137,7 +137,7 @@ function cameraMove(key) {
 				if(collisions.length>0 && collisions[0].distance<2)
 					collide=true;
 				if(!collide) {
-					forward+=0.5;
+					forward+=0.05;
 					camera.position.z=forward;
 					render();
 				}
@@ -159,7 +159,7 @@ function cameraMove(key) {
 				if(collisions.length>0 && collisions[0].distance<2)
 					collide=true;
 				if(!collide) {
-					forward-=0.5;
+					forward-=0.05;
 					camera.position.z=forward;
 					render();
 				}
