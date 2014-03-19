@@ -94,7 +94,7 @@ function cameraMove(key) {
 					collide=true;
 				if(!collide) {
 					lateral-=0.5;
-					camera.position.z=forward;
+					camera.position.x=lateral;
 					render();
 				}
 			}
@@ -116,7 +116,7 @@ function cameraMove(key) {
 					collide=true;
 				if(!collide) {
 					lateral+=0.5;
-					camera.position.z=forward;
+					camera.position.x=lateral;
 					render();
 				}
 			}
