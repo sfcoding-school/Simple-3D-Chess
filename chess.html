@@ -45,7 +45,7 @@
 				camera.position.set(0,0,5);
 				camera.lookAt(scene.position);
 				scene.add(camera);
-				renderer=new THREE.WebGLRenderer();
+				renderer=new THREE.WebGLRenderer({antialias: true});
 				renderer.setSize(window.innerWidth,window.innerHeight);
 				document.body.appendChild(renderer.domElement);
 				renderer.setClearColorHex(0x777777,1);
@@ -97,11 +97,21 @@
 						domEvents.bind(moves[i][j],"click",function(event) { moveTo(event.target); });
 					}
 				}
-			// Creo un punto luce
-				var light=new THREE.PointLight(0xffffff,1,100);
-				light.position.set(0,5,0);
-				scene.add(light);
+			// Creo quattro luci ai lati della scacchiera
+				var light1=new THREE.DirectionalLight(0xffffff);
+				light1.position.set(0,20,25);
+				chess.add(light1);
+				var light2=new THREE.DirectionalLight(0xffffff);
+				light2.position.set(0,20,-25);
+				chess.add(light2);
+				var light3=new THREE.DirectionalLight(0xffffff);
+				light3.position.set(25,20,0);
+				chess.add(light3);
+				var light4=new THREE.DirectionalLight(0xffffff);
+				light4.position.set(-25,20,0);
+				chess.add(light4);
 			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera
+				window.addEventListener("resize",windowResize);
 				window.addEventListener("keydown",function(event) { activateMove(event.keyCode) });
 				window.addEventListener("keyup",function(event) { deactivateMove(event.keyCode) });
 			}
@@ -111,6 +121,12 @@
 				requestAnimationFrame(render);
 				update();
 				renderer.render(scene,camera);
+			}
+			
+			function windowResize() {
+				camera.aspect=window.innerWidth/window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize(window.innerWidth,window.innerHeight);
 			}
 		</script>
 	</body>

@@ -4,7 +4,7 @@ function fillBoard() {
 // Da 0 a 7 sono i pedoni, 8 e 15 le torri, 9 e 14 i cavalli, 10 e 13 gli alfieri, 12 il re ed 11 la regina
 // Nel name mi memorizzo la loro posizione x-z sulla scacchiera, mentre in id ho colore-posizione nell'array-pezzo
 	var piece_geometry=new THREE.CylinderGeometry(0.25,0.25,1);
-	var piece_material=new THREE.MeshBasicMaterial({ color:0xf2f2f2 });
+	var piece_material=new THREE.MeshLambertMaterial({ color:0xefefef });
 	for(var i=0;i<8;i++) {
 		white[i]=new THREE.Mesh(piece_geometry,piece_material);
 		white[i].position.set(plane[i][1].position.x,plane[i][1].position.y+0.5,plane[i][1].position.z);
@@ -65,7 +65,7 @@ function fillBoard() {
 		domEvents.bind(white[i],"click",function(event) { pieceMove(event.target); });
 
 // Creo anche i pezzi neri, per cui vale quando detto per i bianchi
-	piece_material=new THREE.MeshBasicMaterial({ color:0x212121 });
+	piece_material=new THREE.MeshLambertMaterial({ color:0x212121 });
 	for(var i=0;i<8;i++) {
 		black[i]=new THREE.Mesh(piece_geometry,piece_material);
 		black[i].position.set(plane[i][6].position.x,plane[i][6].position.y+0.5,plane[i][6].position.z);
