@@ -1,4 +1,4 @@
-// La funzione passa dal primo al secondo scenario e viceversa
+// Questa funzione passa dalla prima allla seconda scena e viceversa, impostando ogni volta i giusti parametri della telecamera
 function switchScene() {
 	if(mode==0) {
 		mode=1;
@@ -14,7 +14,7 @@ function switchScene() {
 		scene.add(chess);
 		domEvents.unbind(chessboard,"click",function() { });
 	} else {
-// Svuoto eventuali pezzi rimasti dalla vecchia partita
+// Elimino eventuali pezzi rimasti dalla vecchia partita
 		for(var i=0;i<16;i++) {
 			domEvents.unbind(white[i],"click",function() { });
 			domEvents.unbind(black[i],"click",function() { });
@@ -27,7 +27,6 @@ function switchScene() {
 				moves[i][j].name="0";
 				chess.remove(moves[i][j]);
 			}
-// Riattivo la prima scena
 		mode=0;
 		camera.position.set(positionX,0,positionZ);
 		camera.lookAt(scene.position);
@@ -40,7 +39,7 @@ function switchScene() {
 	}
 }
 			
-// La funzione attiva i movimenti della telecamera e consente di interrompere una partita e ritornare alla prima scena
+// Questa funzione attiva i movimenti della telecamera in una certa direzione e consente di interrompere una partita e ritornare alla prima scena
 function activateMove(key) {
 	switch(key) {
 		case 27:
@@ -86,7 +85,7 @@ function activateMove(key) {
 	}
 }
 
-// La funzione deattiva il movimento della telecamera
+// Questaa funzione deattiva il movimento della telecamera in una data direzione
 function deactivateMove(key) {
 	switch(key) {
 		case 37:
@@ -128,8 +127,9 @@ function deactivateMove(key) {
 	}
 }
 
-// La funzione aggiorna effettivamente la posizione della telecamera
-// Prima di muoversi in una direzione viene controllato se si sta sbattendo contro un oggetto
+/* La funzione aggiorna effettivamente la posizione della telecamera
+* Prima di muoversi in una direzione viene controllato se si sta sbattendo contro un oggetto con il raycaster
+* In tal caso il movimento viene impedito */
 function update() {
 	if(moveForward) {
 		var collide=false;

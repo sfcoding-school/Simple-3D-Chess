@@ -1,8 +1,8 @@
-// La funzione popola la scacchiera ed avvia una nuova partita ogni volta che viene invocata
+// Questa funzione popola la scacchiera ed avvia una nuova partita ogni volta che viene invocata
 function fillBoard() {
-// Creo i pezzi bianchi, li dispongo sulle mesh della scacchiera e gli aggancio gli eventi per muoverli
-// Da 0 a 7 sono i pedoni, 8 e 15 le torri, 9 e 14 i cavalli, 10 e 13 gli alfieri, 12 il re ed 11 la regina
-// Nel name mi memorizzo la loro posizione x-z sulla scacchiera, mentre in id ho colore-posizione nell'array-pezzo
+/* Creo i pezzi bianchi, li dispongo sulle mesh della scacchiera e gli aggancio gli eventi per muoverli
+* Da 0 a 7 sono i pedoni, 8 e 15 le torri, 9 e 14 i cavalli, 10 e 13 gli alfieri, 12 il re ed 11 la regina
+* Nel name mi memorizzo la loro posizione x-z sulla scacchiera, mentre in id ho colore-posizione nell'array-pezzo */
 	var piece_geometry=new THREE.CylinderGeometry(0.25,0.25,1);
 	var piece_material=new THREE.MeshLambertMaterial({ color:0xefefef });
 	for(var i=0;i<8;i++) {
@@ -126,9 +126,10 @@ function fillBoard() {
 		domEvents.bind(black[i],"click",function(event) { pieceMove(event.target); });
 }
 			
-// In base al tipo del pezzo contenuto nell'id ed in base al turno di gioco, fa compiere ad ogni pezzo le giuste mosse
+// Questa funzione abbina ad ogni pezzo la giusta funzione per calcolarne le mosse in base al tipo contenuto nell'id
 function pieceMove(mesh) {
 	if(mesh.id.substring(0,1)==turn)  {
+// Eventuali mosse di altri pezzi vengono nascoste
 		for(var i=0;i<8;i++)
 			for(var j=0;j<8;j++) {
 				moves[i][j].name="0";
@@ -155,7 +156,7 @@ function pieceMove(mesh) {
 				kingGo(mesh);
 				break;
 		}
-// Se il pezzo non è attivo faccio in modo che cliccarlo sia come cliccare il quadrato su cui si trova
+// Se il pezzo non è attivo faccio in modo che cliccandolo ci si muova sul quadrato su cui esso si trova
 	} else
 		if(parseInt(moves[parseInt(mesh.name.substring(0,1))][parseInt(mesh.name.substring(1,2))].name)==1)
 			moveTo(moves[parseInt(mesh.name.substring(0,1))][parseInt(mesh.name.substring(1,2))]);
@@ -451,12 +452,11 @@ function kingGo(king) {
 	}
 }
 			
-// Sposta il pezzo selezionato nella casella scelta ed eventualmente mangia un pezzo avversario
+// Questa funzione sposta il pezzo selezionato nella casella scelta ed eventualmente mangia il pezzo avversario
 function moveTo(piece) {
 	if(parseInt(moves[3.5-piece.position.x][3.5-piece.position.z].name)==1) {
 		var end=0;
 // Controllo se sto mangiando un pezzo, in tal caso gli sgancio l'evento e lo rimuovo dalla scena
-// Se il pezzo mangiato è un re la partita è finita
 		if(parseInt(plane[3.5-piece.position.x][3.5-piece.position.z].name)!=0) {
 			var killed=chess.getObjectByName((3.5-piece.position.x)+""+(3.5-piece.position.z)).id;
 			var name=parseInt(killed.substring(1,2));
@@ -465,6 +465,7 @@ function moveTo(piece) {
 			if(actual.id.substring(0,1)=="b") {
 				domEvents.unbind(white[name],"click",function() { });
 				chess.remove(white[name]);
+// Se il pezzo mangiato è un re la partita è finita
 				if(killed.substring(2,3)=="k")
 					end=-1;
 			} else {
@@ -474,7 +475,7 @@ function moveTo(piece) {
 					end=1;
 			}
 		}
-// Controllo se per caso un pedone è arrivato in fondo e va cambiato in regina
+// Controllo se il pezzo è un pedone ed è arrivato in fondo, e lo cambio in regina
 		if(actual.id.substring(2,3)=="p" && ((3.5-piece.position.z)==7 || (3.5-piece.position.z)==0)) {
 			actual.id=actual.id.substring(0,2)+"q"
 			if(actual.id.substring(0,1)=="b")
@@ -492,7 +493,7 @@ function moveTo(piece) {
 				chess.remove(moves[i][j]);
 			}
 		actual.name=(3.5-piece.position.x)+""+(3.5-piece.position.z);
-// Se la partita è finita ritorno alla prima scenografia, altrimenti cambio turno e giro la telecamera
+// Se la partita è finita ritorno alla prima scena, altrimenti cambio turno e giro la telecamera
 		if(end!=0) {
 			if(end==-1)
 				alert("Black is the winner!");

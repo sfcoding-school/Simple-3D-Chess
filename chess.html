@@ -14,30 +14,32 @@
 		<script src="useScene.js"></script>
 		<script src="useChess.js"></script>
 		<script>
-			// Dichiaro le variabili che conterranno la scena, la telecamera, il renderer, il gestore di eventi DOM e il RayCaster per il rilevamento di collisioni
+			/* Le variabili scene, camera e renderer contengono rispettivamente i tre oggetti necessari a three.js per gestire l'ambiente 3D
+			* La variabile domEvents serve a threex.domevents.js per poter agganciare gli eventi agli oggetti 3D
+			* raycaster serve a controllare e gestire le collisioni */
 			var scene,camera,renderer,domEvents,raycaster;
-			// Dichiaro un array contenente tutti i raggi necessari al RayCaster per rilevare eventuali collisioni con gli oggetti
+			// Metto in un array dei vettori necessari al raycaster a rilevare le collisioni
 			var rays=[new THREE.Vector3(0, 0, 1),new THREE.Vector3(1, 0, 1),new THREE.Vector3(1, 0, 0),new THREE.Vector3(1, 0, -1),new THREE.Vector3(0, 0, -1),new THREE.Vector3(-1, 0, -1), new THREE.Vector3(-1, 0, 0),new THREE.Vector3(-1, 0, 1)];
-			// Dichiaro delle variabili che mi indicano se ho modificato un dato parametro della visuale
+			// Queste variabili mi indicano ad ogni richiamo di render() in quale direzione muovere o ruotare la telecamera
 			var moveForward=false,moveBackward=false,moveRight=false,moveLeft=false,rotateRight=false,rotateLeft=false,lookRight=false,lookLeft=false,lookAbove=false,lookBelow=false;
-			// Dichiaro le variabili globali che contengono la scacchiera, le mosse possibili, i pezzi bianchi ed i pezzi neri
+			// Queste variabili contengono rispettivamente la scacchiera, le caselle delle mosse ed i pezzi bianchi e neri
 			var plane=new Array(8);
 			var moves=new Array(8);
 			var white=new Array(16);
 			var black=new Array(16);
-			// Dichiaro una variabile globale per tenere traccia dell'ultimo pezzo cliccato, una per il turno degli scacchi, per l'oggetto interattivo della prima scena e per la modalità
+			// actual indica l'ultimo pezzo selezionato, chessboard è la mesh cliccabile nella stanza, turn indica il turno della scacchiera e mode indica in quale scena mi trovo
 			var actual,chessboard,turn="e",mode=0;
-			// Dichiaro variabili per tenere traccia dei movimenti della telecamera
+			// Tengo traccia della posizione della telecamera al cambio di scena
 			var rotation=0,positionZ,positionX,angleX,angleY;
-			// Dichiaro due variabili contenitore che conterranno le due scene diverse
+			// Due contenitori che contengono gli oggetti delle due scene
 			var room=new THREE.Object3D();
 			var chess=new THREE.Object3D();
 			
-			// Avvio il gioco e parso la scena
+			// Avvio il gioco e faccio il render della scena
 			init();
 			render();
 			
-			// La funzione che crea le due scenografie principali
+			// Questa funzione crea le due scene principali, abbina alcuni eventi e mostra la prima scena
 			function init() {
 			// Preparo la scena, la telecamera, il renderer ed il gestore di eventi DOM
 				scene=new THREE.Scene();
@@ -49,7 +51,11 @@
 				renderer.setSize(window.innerWidth,window.innerHeight);
 				document.body.appendChild(renderer.domElement);
 				renderer.setClearColorHex(0x777777,1);
+			// Dico al renderer di gestire le ombre
+				renderer.shadowMapEnabled=true;
+				renderer.shadowMapSoft=true;
 				document.body.appendChild(renderer.domElement);
+			// Preparo il raycaster per gestire le collisioni
 				raycaster=new THREE.Raycaster();
 				domEvents=new THREEx.DomEvents(camera,renderer.domElement);
 			// Creo la prima scena e ci collego un evento che mi consenta di passare alla seconda
@@ -58,10 +64,18 @@
 					chessboard=new THREE.Mesh(geometry,new THREE.MeshNormalMaterial());
 					chessboard.scale.set(1,1,1);
 					chessboard.position.set(0,0,0);
+			// Voglio che l'oggetto generi e riceva ombre
+					chessboard.castShadow=true;
+					chessboard.receiveShadow=true;
 					domEvents.bind(chessboard,"click",function() {  switchScene(); });
 					room.add(chessboard);
 				});
 				scene.add(room);
+			// Creo una luce al di sopra della prima scena per generare le ombre
+				var light=new THREE.SpotLight(0xffffff,1);
+				light.position.set(0,20,0);
+				light.castShadow=true;
+				room.add(light);
 			// Creo il bordo della schacchiera
 				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshBasicMaterial({color:0x926239}));
 				border.position.set(0,-0.01,0);
@@ -84,7 +98,7 @@
 						chess.add(plane[i][j]);
 					}
 				}
-			// Creo i quadrati delle mosse, gli aggancio l'evento ma non li mostro, segnandomi nel name se sono attivi o no
+			// Creo i quadrati delle mosse, gli aggancio l'evento per muoverci i pezzi ma non li mostro, segnandomi nel name se sono attivi o no
 				var small_plane_geometry=new THREE.PlaneGeometry(0.9,0.9);
 				var red_material=new THREE.MeshBasicMaterial({color:"red"});
 				for(var i=0;i<8;i++) {
@@ -110,19 +124,18 @@
 				var light4=new THREE.DirectionalLight(0xffffff);
 				light4.position.set(-25,20,0);
 				chess.add(light4);
-			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera
+			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera ed uno per il ridimensionamento della finestra
 				window.addEventListener("resize",windowResize);
 				window.addEventListener("keydown",function(event) { activateMove(event.keyCode) });
 				window.addEventListener("keyup",function(event) { deactivateMove(event.keyCode) });
 			}
-	
-			// La funzione che esegue il render della scena
+			// Questa funzione che esegue il render della scena
 			function render() {
 				requestAnimationFrame(render);
 				update();
 				renderer.render(scene,camera);
 			}
-			
+			// Questa funzione reimposta le proporzioni della scena se la finestra viene ridimensionata
 			function windowResize() {
 				camera.aspect=window.innerWidth/window.innerHeight;
 				camera.updateProjectionMatrix();
