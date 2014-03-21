@@ -98,10 +98,8 @@
 					}
 				}
 			// Creo un punto luce
-				var light=new THREE.PointLight(0xffffff,10,100);
-				light.position.x=2;
-				light.position.y=2;
-				light.position.z=2;
+				var light=new THREE.PointLight(0xffffff,1,100);
+				light.position.set(0,5,0);
 				scene.add(light);
 			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera
 				window.addEventListener("keydown",function(event) { activateMove(event.keyCode) });
