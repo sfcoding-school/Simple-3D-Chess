@@ -3,7 +3,7 @@ function fillBoard() {
 /* Creo i pezzi bianchi, li dispongo sulle mesh della scacchiera e gli aggancio gli eventi per muoverli
 * Da 0 a 7 sono i pedoni, 8 e 15 le torri, 9 e 14 i cavalli, 10 e 13 gli alfieri, 12 il re ed 11 la regina
 * Nel name mi memorizzo la loro posizione x-z sulla scacchiera, mentre in id ho colore-posizione nell'array-pezzo */
-	var piece_geometry=new THREE.CylinderGeometry(0.25,0.25,1);
+	var piece_geometry=new THREE.SphereGeometry(0.25);
 	var piece_material=new THREE.MeshLambertMaterial({ color:0xefefef });
 	for(var i=0;i<8;i++) {
 		white[i]=new THREE.Mesh(piece_geometry,piece_material);
@@ -13,6 +13,7 @@ function fillBoard() {
 		plane[i][1].name="10";
 		chess.add(white[i]);
 	}
+	piece_geometry=new THREE.CylinderGeometry(0.25,0.25,1);
 	white[8]=new THREE.Mesh(piece_geometry,piece_material);
 	white[8].position.set(plane[0][0].position.x,plane[0][0].position.y+0.5,plane[0][0].position.z);
 	white[8].id="w0r";
@@ -25,6 +26,7 @@ function fillBoard() {
 	white[15].name="70";
 	plane[7][0].name="50";
 	chess.add(white[15]);
+	piece_geometry=new THREE.CubeGeometry(0.5,1,0.5);
 	white[9]=new THREE.Mesh(piece_geometry,piece_material);
 	white[9].position.set(plane[1][0].position.x,plane[1][0].position.y+0.5,plane[1][0].position.z);
 	white[9].id="w1n";
@@ -37,6 +39,7 @@ function fillBoard() {
 	white[14].name="60";
 	plane[6][0].name="30";
 	chess.add(white[14]);
+	piece_geometry=new THREE.CylinderGeometry(0,0.25,1);
 	white[10]=new THREE.Mesh(piece_geometry,piece_material);
 	white[10].position.set(plane[2][0].position.x,plane[2][0].position.y+0.5,plane[2][0].position.z);
 	white[10].id="w2b";
@@ -49,12 +52,14 @@ function fillBoard() {
 	white[13].name="50";
 	plane[5][0].name="31";
 	chess.add(white[13]);
+	piece_geometry=new THREE.CylinderGeometry(0.35,0.25,1);
 	white[12]=new THREE.Mesh(piece_geometry,piece_material);
 	white[12].position.set(plane[4][0].position.x,plane[4][0].position.y+0.5,plane[4][0].position.z);
 	white[12].id="w4k";
   	white[12].name="40";
 	plane[4][0].name="100";
 	chess.add(white[12]);
+	piece_geometry=new THREE.CylinderGeometry(0.25,0.35,1);
  	white[11]=new THREE.Mesh(piece_geometry,piece_material);
 	white[11].position.set(plane[3][0].position.x,plane[3][0].position.y+0.5,plane[3][0].position.z);
 	white[11].id="w3q";
@@ -63,8 +68,8 @@ function fillBoard() {
 	chess.add(white[11]);
 	for(var i=0;i<16;i++)
 		domEvents.bind(white[i],"click",function(event) { pieceMove(event.target); });
-
 // Creo anche i pezzi neri, per cui vale quando detto per i bianchi
+	piece_geometry=new THREE.SphereGeometry(0.25);
 	piece_material=new THREE.MeshLambertMaterial({ color:0x212121 });
 	for(var i=0;i<8;i++) {
 		black[i]=new THREE.Mesh(piece_geometry,piece_material);
@@ -74,6 +79,7 @@ function fillBoard() {
 		plane[i][6].name="-10";
 		chess.add(black[i]);
 	}
+	piece_geometry=new THREE.CylinderGeometry(0.25,0.25,1);
 	black[8]=new THREE.Mesh(piece_geometry,piece_material);
 	black[8].position.set(plane[0][7].position.x,plane[0][7].position.y+0.5,plane[0][7].position.z);
 	black[8].id="b0r";
@@ -86,6 +92,7 @@ function fillBoard() {
 	black[15].name="77";
 	plane[7][7].name="-50";
 	chess.add(black[15]);
+	piece_geometry=new THREE.CubeGeometry(0.5,1,0.5);
 	black[9]=new THREE.Mesh(piece_geometry,piece_material);
 	black[9].position.set(plane[1][7].position.x,plane[1][7].position.y+0.5,plane[1][7].position.z);
 	black[9].id="b1n";
@@ -98,6 +105,7 @@ function fillBoard() {
 	black[14].name="67";
 	plane[6][7].name="-30";
 	chess.add(black[14]);
+	piece_geometry=new THREE.CylinderGeometry(0,0.25,1);
 	black[10]=new THREE.Mesh(piece_geometry,piece_material);
 	black[10].position.set(plane[2][7].position.x,plane[2][7].position.y+0.5,plane[2][7].position.z);
 	black[10].id="b2b";
@@ -110,12 +118,14 @@ function fillBoard() {
 	black[13].name="57";
 	plane[5][7].name="-31";
 	chess.add(black[13]);
+	piece_geometry=new THREE.CylinderGeometry(0.35,0.25,1);
 	black[12]=new THREE.Mesh(piece_geometry,piece_material);
 	black[12].position.set(plane[4][7].position.x,plane[4][7].position.y+0.5,plane[4][7].position.z);
 	black[12].id="b4k";
 	black[12].name="47";
 	plane[4][7].name="-100";
 	chess.add(black[12]);
+	piece_geometry=new THREE.CylinderGeometry(0.25,0.35,1);
 	black[11]=new THREE.Mesh(piece_geometry,piece_material);
 	black[11].position.set(plane[3][7].position.x,plane[3][7].position.y+0.5,plane[3][7].position.z);
 	black[11].id="b3q";
