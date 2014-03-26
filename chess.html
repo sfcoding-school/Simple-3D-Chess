@@ -61,7 +61,7 @@
 			// Creo la prima scena e ci collego un evento che mi consenta di passare alla seconda
 				var loader=new THREE.JSONLoader();
 				loader.load("Cup.js",function(geometry,materials) {
-					chessboard=new THREE.Mesh(geometry,new THREE.MeshNormalMaterial());
+					chessboard=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 					chessboard.scale.set(1,1,1);
 					chessboard.position.set(0,0,0);
 			// Voglio che l'oggetto generi e riceva ombre
@@ -72,9 +72,11 @@
 				});
 				scene.add(room);
 			// Creo una luce al di sopra della prima scena per generare le ombre
-				var light=new THREE.SpotLight(0xffffff,1);
-				light.position.set(0,20,0);
+				var light=new THREE.SpotLight(0xffffff,3);
+				light.position.set(0,200,200);
 				light.castShadow=true;
+				light.shadowDarkness=1;
+				light.shadowCameraVisible=true;
 				room.add(light);
 			// Creo il bordo della schacchiera
 				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshBasicMaterial({color:0x926239}));
@@ -114,15 +116,19 @@
 			// Creo quattro luci ai lati della scacchiera
 				var light1=new THREE.DirectionalLight(0xffffff);
 				light1.position.set(0,20,25);
+				light1.target.position.set(0,0,0);
 				chess.add(light1);
 				var light2=new THREE.DirectionalLight(0xffffff);
 				light2.position.set(0,20,-25);
+				light2.target.position.set(0,0,0);
 				chess.add(light2);
 				var light3=new THREE.DirectionalLight(0xffffff);
 				light3.position.set(25,20,0);
+				light3.target.position.set(0,0,0);
 				chess.add(light3);
 				var light4=new THREE.DirectionalLight(0xffffff);
 				light4.position.set(-25,20,0);
+				light4.target.position.set(0,0,0);
 				chess.add(light4);
 			// Creo due eventi da tastiera per gestire il cambio di scena e i movimenti della telecamera ed uno per il ridimensionamento della finestra
 				window.addEventListener("resize",windowResize);
