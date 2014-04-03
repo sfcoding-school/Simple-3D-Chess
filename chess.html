@@ -74,12 +74,12 @@
 			// Creo una luce al di sopra della prima scena per generare le ombre
 				var light=new THREE.SpotLight(0xffffff,3);
 				light.position.set(0,200,200);
-				light.castShadow=true;
+				//light.castShadow=true;
 				light.shadowDarkness=1;
 				light.shadowCameraVisible=true;
 				room.add(light);
 			// Creo il bordo della schacchiera
-				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshBasicMaterial({color:0x926239}));
+				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("wood.jpg",{},function() { render(); })}));
 				border.position.set(0,-0.01,0);
 				border.rotation.x=-90*(Math.PI/180);
 				chess.add(border);
