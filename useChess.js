@@ -138,7 +138,7 @@ function fillBoard() {
 			
 // Questa funzione abbina ad ogni pezzo la giusta funzione per calcolarne le mosse in base al tipo contenuto nell'id
 function pieceMove(mesh) {
-	if(mesh.id.substring(0,1)==turn)  {
+	if(mesh.id.substring(0,1)==turn && !changeViewpoint)  {
 // Eventuali mosse di altri pezzi vengono nascoste
 		for(var i=0;i<8;i++)
 			for(var j=0;j<8;j++) {
@@ -509,15 +509,16 @@ function moveTo(piece) {
 				alert("Black is the winner!");
 			else
 				alert("White is the winner!");
-			switchScene();
+			newGame();
 		} else {
 			if(turn=="b") {
 				turn="w";
-				camera.position.set(0,10,10);
+				//camera.position.set(0,10,10);
 			} else {
 				turn="b";
-				camera.position.set(0,10,-10);
+				//camera.position.set(0,10,-10);
 			}
+			changeViewpoint=true;
 		}
 		camera.lookAt(scene.position);
 	}
