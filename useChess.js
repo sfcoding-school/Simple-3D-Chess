@@ -684,7 +684,7 @@ function moveTo(piece) {
 				var temp=actual;
 				actual=black[actual.id.substing(1,2)];
 				scene.remove(temp);
-			else
+			} else {
 				loader.load("wqueen.js",function(geometry,materials) {
 					black[actual.id.substring(1,2)]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 					black[actual.id.substring(1,2)].position=actual.position;
@@ -698,6 +698,7 @@ function moveTo(piece) {
 				var temp=actual;
 				actual=black[actual.id.substing(1,2)];
 				scene.remove(temp);
+			}
 		}
 // Sposto il valore del pezzo mosso nella scacchiera
 		plane[3.5-piece.position.x][3.5-piece.position.z].name=plane[3.5-actual.position.x][3.5-actual.position.z].name;
