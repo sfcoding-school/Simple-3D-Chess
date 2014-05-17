@@ -149,14 +149,16 @@ function fillBoard() {
 		domEvents.bind(white[12],"click",function(event) { pieceMove(event.target); });
 		scene.add(white[12]);
 	});
-	piece_geometry=new THREE.CylinderGeometry(0.25,0.35,1);
- 	white[11]=new THREE.Mesh(piece_geometry,piece_material);
-	white[11].position.set(plane[3][0].position.x,plane[3][0].position.y+0.5,plane[3][0].position.z);
-	white[11].id="w3q";
-	white[11].name="30";
-	plane[3][0].name="90";
-	domEvents.bind(white[11],"click",function(event) { pieceMove(event.target); });
-	scene.add(white[11]);
+	loader.load("wqueen.js",function(geometry,materials) {
+		white[11]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		white[11].position.set(plane[3][0].position.x,plane[3][0].position.y,plane[3][0].position.z);
+		white[11].scale.set(0.7,0.7,0.7);
+		white[11].id="w3q";
+		white[11].name="30";
+		plane[3][0].name="90";
+		domEvents.bind(white[11],"click",function(event) { pieceMove(event.target); });
+		scene.add(white[11]);
+	});
 // Creo i pezzi neri, per cui vale quando detto per i bianchi
 	loader.load("bpawn.js",function(geometry,materials) {
 		black[0]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
@@ -304,14 +306,16 @@ function fillBoard() {
 		domEvents.bind(black[12],"click",function(event) { pieceMove(event.target); });
 		scene.add(black[12]);
 	});
-	piece_geometry=new THREE.CylinderGeometry(0.25,0.35,1);
-	black[11]=new THREE.Mesh(piece_geometry,piece_material);
-	black[11].position.set(plane[3][7].position.x,plane[3][7].position.y+0.5,plane[3][7].position.z);
-	black[11].id="b3q";
-	black[11].name="37";
-	plane[3][7].name="-90";
-	domEvents.bind(black[11],"click",function(event) { pieceMove(event.target); });
-	scene.add(black[11]);
+	loader.load("bqueen.js",function(geometry,materials) {
+		black[11]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		black[11].position.set(plane[3][7].position.x,plane[3][7].position.y,plane[3][7].position.z);
+		black[11].scale.set(0.7,0.7,0.7);
+		black[11].id="b3q";
+		black[11].name="37";
+		plane[3][7].name="-90";
+		domEvents.bind(black[11],"click",function(event) { pieceMove(event.target); });
+		scene.add(black[11]);
+	});
 }
 			
 // Questa funzione abbina ad ogni pezzo la giusta funzione per calcolarne le mosse in base al tipo contenuto nell'id
@@ -687,14 +691,12 @@ function moveTo(piece) {
 				alert("Black is the winner!");
 			else
 				alert("White is the winner!");
-			newGame();
+			location.reload();
 		} else {
 			if(turn=="b") {
 				turn="w";
-				//camera.position.set(0,10,10);
 			} else {
 				turn="b";
-				//camera.position.set(0,10,-10);
 			}
 			changeViewpoint=true;
 		}

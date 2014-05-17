@@ -1,24 +1,3 @@
-// Questa funzione inizia una nuova partita
-function newGame() {
-// Elimino eventuali pezzi rimasti dalla vecchia partita
-	for(var i=0;i<16;i++) {
-		domEvents.unbind(white[i],"click",function() { });
-		domEvents.unbind(black[i],"click",function() { });
-		scene.remove(white[i]);
-		scene.remove(black[i]);
-	}
-// Rimuove eventuali quadrati delle mosse rimasti attivi
-	for(var i=0;i<8;i++)
-		for(var j=0;j<8;j++) {
-			moves[i][j].name="0";
-			scene.remove(moves[i][j]);
-		}
-	camera.position.set(0,10,10);
-	camera.lookAt(scene.position);
-	turn="w";
-	fillBoard();
-}
-			
 // Questa funzione attiva i movimenti della telecamera in una certa direzione
 function activateMove(key) {
 	switch(key) {
