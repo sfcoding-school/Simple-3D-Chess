@@ -670,10 +670,34 @@ function moveTo(piece) {
 // Controllo se il pezzo è un pedone ed è arrivato in fondo, e lo cambio in regina
 		if(actual.id.substring(2,3)=="p" && ((3.5-piece.position.z)==7 || (3.5-piece.position.z)==0)) {
 			actual.id=actual.id.substring(0,2)+"q"
-			if(actual.id.substring(0,1)=="b")
-				plane[3.5-actual.position.x][3.5-actual.position.z].name="-90";
+			if(actual.id.substring(0,1)=="b") {
+				loader.load("bqueen.js",function(geometry,materials) {
+					black[actual.id.substring(1,2)]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+					black[actual.id.substring(1,2)].position=actual.position;
+					black[actual.id.substring(1,2)].scale.set(0.7,0.7,0.7);
+					black[actual.id.substring(1,2)].id="b"+actual.id.substring(1,2)+"q";
+					black[actual.id.substring(1,2)].name=actual.name;
+					plane[3.5-actual.position.x][3.5-actual.position.z].name="-90";
+					domEvents.bind(black[actual.id.substring(1,2)],"click",function(event) { pieceMove(event.target); });
+					scene.add(black[actual.id.substring(1,2)]);
+				});
+				var temp=actual;
+				actual=black[actual.id.substing(1,2)];
+				scene.remove(temp);
 			else
-				plane[3.5-actual.position.x][3.5-actual.position.z].name="90";
+				loader.load("wqueen.js",function(geometry,materials) {
+					black[actual.id.substring(1,2)]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+					black[actual.id.substring(1,2)].position=actual.position;
+					black[actual.id.substring(1,2)].scale.set(0.7,0.7,0.7);
+					black[actual.id.substring(1,2)].id="w"+actual.id.substring(1,2)+"q";
+					black[actual.id.substring(1,2)].name=actual.name;
+					plane[3.5-actual.position.x][3.5-actual.position.z].name="90";
+					domEvents.bind(black[actual.id.substring(1,2)],"click",function(event) { pieceMove(event.target); });
+					scene.add(black[actual.id.substring(1,2)]);
+				});
+				var temp=actual;
+				actual=black[actual.id.substing(1,2)];
+				scene.remove(temp);
 		}
 // Sposto il valore del pezzo mosso nella scacchiera
 		plane[3.5-piece.position.x][3.5-piece.position.z].name=plane[3.5-actual.position.x][3.5-actual.position.z].name;
