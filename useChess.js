@@ -145,7 +145,7 @@ function fillBoard() {
 		white[12].scale.set(0.7,0.7,0.7);
 		white[12].id="w4k";
 		white[12].name="40";
-		plane[5][0].name="100";
+		plane[4][0].name="100";
 		domEvents.bind(white[12],"click",function(event) { pieceMove(event.target); });
 		scene.add(white[12]);
 	});
@@ -300,7 +300,7 @@ function fillBoard() {
 		black[12].scale.set(0.7,0.7,0.7);
 		black[12].id="b4k";
 		black[12].name="47";
-		plane[5][7].name="-100";
+		plane[4][7].name="-100";
 		domEvents.bind(black[12],"click",function(event) { pieceMove(event.target); });
 		scene.add(black[12]);
 	});
