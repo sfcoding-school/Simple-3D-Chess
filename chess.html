@@ -17,6 +17,8 @@
 			/* Le variabili scene, camera e renderer contengono rispettivamente i tre oggetti necessari a three.js per gestire l'ambiente 3D
 			* La variabile domEvents serve a threex.domevents.js per poter agganciare gli eventi agli oggetti 3D */
 			var scene,camera,renderer,domEvents;
+			// Questa variabile contiene il loader JSON per caricare i modelli fatti in blender
+			var loader=new THREE.JSONLoader();
 			// Queste variabili mi indicano ad ogni richiamo di render() in quale direzione ruotare la telecamera
 			var rotateRight=false,rotateLeft=false,changeViewpoint=false;
 			// Queste variabili contengono rispettivamente la scacchiera, le caselle delle mosse ed i pezzi bianchi e neri
@@ -28,8 +30,6 @@
 			var actual,turn="w";
 			// Tengo traccia della rotazione della telecamera
 			var rotation=0,change=0;
-			// Un contenitore che contiene gli oggetti della scena
-			var chess=new THREE.Object3D();
 			
 			// Avvio il gioco e faccio il render della scena
 			init();
@@ -46,14 +46,14 @@
 				renderer=new THREE.WebGLRenderer({antialias: true});
 				renderer.setSize(window.innerWidth,window.innerHeight);
 				document.body.appendChild(renderer.domElement);
-				renderer.setClearColorHex(0x777777,1);
+				renderer.setClearColorHex(0x999999,1);
 			// Preparo il gestore di eventi DOM
 				domEvents=new THREEx.DomEvents(camera,renderer.domElement);
 			// Creo il bordo della schacchiera
 				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("wood.jpg",{},function() { render(); })}));
 				border.position.set(0,-0.01,0);
 				border.rotation.x=-90*(Math.PI/180);
-				chess.add(border);
+				scene.add(border);
 			// Creo i quadrati della scacchiera, segnandomi nel name il pezzo che c'è sopra
 				var plane_geometry=new THREE.PlaneGeometry(1,1);
 				var white_material=new THREE.MeshBasicMaterial({color:"white"});
@@ -68,7 +68,7 @@
 						plane[i][j].position.set(3.5-i,0,3.5-j);
 						plane[i][j].rotation.x=-90*(Math.PI/180);
 						plane[i][j].name="0";
-						chess.add(plane[i][j]);
+						scene.add(plane[i][j]);
 					}
 				}
 			// Creo i quadrati delle mosse, gli aggancio l'evento per muoverci i pezzi ma non li mostro, segnandomi nel name se sono attivi o no
@@ -88,25 +88,24 @@
 				var light1=new THREE.DirectionalLight(0xffffff);
 				light1.position.set(0,20,25);
 				light1.target.position.set(0,0,0);
-				chess.add(light1);
+				scene.add(light1);
 				var light2=new THREE.DirectionalLight(0xffffff);
 				light2.position.set(0,20,-25);
 				light2.target.position.set(0,0,0);
-				chess.add(light2);
+				scene.add(light2);
 				var light3=new THREE.DirectionalLight(0xffffff);
 				light3.position.set(25,20,0);
 				light3.target.position.set(0,0,0);
-				chess.add(light3);
+				scene.add(light3);
 				var light4=new THREE.DirectionalLight(0xffffff);
 				light4.position.set(-25,20,0);
 				light4.target.position.set(0,0,0);
-				chess.add(light4);
+				scene.add(light4);
 			// Creo l'evento da tastiera per gestire i movimenti della telecamera ed il ridimensionamento della finestra
 				window.addEventListener("resize",windowResize);
 				window.addEventListener("keydown",function(event) { activateMove(event.keyCode) });
 				window.addEventListener("keyup",function(event) { deactivateMove(event.keyCode) });
 				fillBoard();
-				scene.add(chess);
 			}
 			// Questa funzione che esegue il render della scena
 			function render() {
