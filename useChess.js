@@ -103,22 +103,26 @@ function fillBoard() {
 		domEvents.bind(white[15],"click",function(event) { pieceMove(event.target); });
 		scene.add(white[15]);
 	});
-	var piece_geometry=new THREE.CubeGeometry(0.5,1,0.5);
-	var piece_material=new THREE.MeshLambertMaterial({ color:0xefefef });
-	white[9]=new THREE.Mesh(piece_geometry,piece_material);
-	white[9].position.set(plane[1][0].position.x,plane[1][0].position.y+0.5,plane[1][0].position.z);
-	white[9].id="w1n";
-	white[9].name="10";
-	plane[1][0].name="30";
-	domEvents.bind(white[9],"click",function(event) { pieceMove(event.target); });
-	scene.add(white[9]);
-	white[14]=new THREE.Mesh(piece_geometry,piece_material);
-	white[14].position.set(plane[6][0].position.x,plane[6][0].position.y+0.5,plane[6][0].position.z);
-	white[14].id="w6n";
-	white[14].name="60";
-	plane[6][0].name="30";
-	domEvents.bind(white[14],"click",function(event) { pieceMove(event.target); });
-	scene.add(white[14]);
+	loader.load("wknight.js",function(geometry,materials) {
+		white[9]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		white[9].position.set(plane[1][0].position.x,plane[1][0].position.y,plane[1][0].position.z);
+		white[9].scale.set(0.7,0.7,0.7);
+		white[9].id="w1n";
+		white[9].name="17";
+		plane[1][0].name="30";
+		domEvents.bind(white[9],"click",function(event) { pieceMove(event.target); });
+		scene.add(white[9]);
+	});
+	loader.load("wknight.js",function(geometry,materials) {
+		white[14]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		white[14].position.set(plane[6][0].position.x,plane[6][0].position.y,plane[6][0].position.z);
+		white[14].scale.set(0.7,0.7,0.7);
+		white[14].id="w6n";
+		white[14].name="67";
+		plane[6][0].name="30";
+		domEvents.bind(white[14],"click",function(event) { pieceMove(event.target); });
+		scene.add(white[14]);
+	});
 	loader.load("wbishop.js",function(geometry,materials) {
 		white[10]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		white[10].position.set(plane[2][0].position.x,plane[2][0].position.y,plane[2][0].position.z);
@@ -260,22 +264,26 @@ function fillBoard() {
 		domEvents.bind(black[15],"click",function(event) { pieceMove(event.target); });
 		scene.add(black[15]);
 	});
-	piece_geometry=new THREE.CubeGeometry(0.5,1,0.5);
-	piece_material=new THREE.MeshLambertMaterial({ color:0x212121 });
-	black[9]=new THREE.Mesh(piece_geometry,piece_material);
-	black[9].position.set(plane[1][7].position.x,plane[1][7].position.y+0.5,plane[1][7].position.z);
-	black[9].id="b1n";
-	black[9].name="17";
-	plane[1][7].name="-30";
-	domEvents.bind(black[9],"click",function(event) { pieceMove(event.target); });
-	scene.add(black[9]);
-	black[14]=new THREE.Mesh(piece_geometry,piece_material);
-	black[14].position.set(plane[6][7].position.x,plane[6][7].position.y+0.5,plane[6][7].position.z);
-	black[14].id="b6n";
-	black[14].name="67";
-	plane[6][7].name="-30";
-	domEvents.bind(black[14],"click",function(event) { pieceMove(event.target); });
-	scene.add(black[14]);
+	loader.load("bknight.js",function(geometry,materials) {
+		black[9]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		black[9].position.set(plane[1][7].position.x,plane[1][7].position.y,plane[1][7].position.z);
+		black[9].scale.set(0.7,0.7,0.7);
+		black[9].id="b1n";
+		black[9].name="17";
+		plane[1][7].name="-30";
+		domEvents.bind(black[9],"click",function(event) { pieceMove(event.target); });
+		scene.add(black[9]);
+	});
+	loader.load("bknight.js",function(geometry,materials) {
+		black[14]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
+		black[14].position.set(plane[6][7].position.x,plane[6][7].position.y,plane[6][7].position.z);
+		black[14].scale.set(0.7,0.7,0.7);
+		black[14].id="b6n";
+		black[14].name="67";
+		plane[6][7].name="-30";
+		domEvents.bind(black[14],"click",function(event) { pieceMove(event.target); });
+		scene.add(black[14]);
+	});
 	loader.load("bbishop.js",function(geometry,materials) {
 		black[10]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		black[10].position.set(plane[2][7].position.x,plane[2][7].position.y,plane[2][7].position.z);
