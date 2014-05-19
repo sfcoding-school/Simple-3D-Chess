@@ -9,10 +9,10 @@
 		</style>
 	</head>
 	<body>
-		<script src="three.js"></script>
-		<script src="threex.domevents.js"></script>
-		<script src="useScene.js"></script>
-		<script src="useChess.js"></script>
+		<script src="http://127.0.0.1:8080/libs/three.js"></script>
+		<script src="http://127.0.0.1:8080/libs/threex.domevents.js"></script>
+		<script src="http://127.0.0.1:8080/useScene.js"></script>
+		<script src="http://127.0.0.1:8080/useChess.js"></script>
 		<script>
 			/* Le variabili scene, camera e renderer contengono rispettivamente i tre oggetti necessari a three.js per gestire l'ambiente 3D
 			* La variabile domEvents serve a threex.domevents.js per poter agganciare gli eventi agli oggetti 3D */
@@ -50,7 +50,7 @@
 			// Preparo il gestore di eventi DOM
 				domEvents=new THREEx.DomEvents(camera,renderer.domElement);
 			// Creo il bordo della schacchiera
-				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("wood.jpg",{},function() { render(); })}));
+				var border=new THREE.Mesh(new THREE.PlaneGeometry(8.5,8.5),new THREE.MeshBasicMaterial({color:0xFF9966}));
 				border.position.set(0,-0.01,0);
 				border.rotation.x=-90*(Math.PI/180);
 				scene.add(border);
