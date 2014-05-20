@@ -126,7 +126,7 @@ function fillBoard() {
 	loader.load("http://127.0.0.1:8080/models/wbishop.js",function(geometry,materials) {
 		white[10]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		white[10].position.set(plane[2][0].position.x,plane[2][0].position.y,plane[2][0].position.z);
-		white[10].scale.set(0.7,0.7,0.7);
+		white[10].scale.set(0.7,0.8,0.7);
 		white[10].id="w2b";
 		white[10].name="20";
 		plane[2][0].name="31";
@@ -136,7 +136,7 @@ function fillBoard() {
 	loader.load("http://127.0.0.1:8080/models/wbishop.js",function(geometry,materials) {
 		white[13]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		white[13].position.set(plane[5][0].position.x,plane[5][0].position.y,plane[5][0].position.z);
-		white[13].scale.set(0.7,0.7,0.7);
+		white[13].scale.set(0.7,0.8,0.7);
 		white[13].id="w5b";
 		white[13].name="50";
 		plane[5][0].name="31";
@@ -287,7 +287,7 @@ function fillBoard() {
 	loader.load("http://127.0.0.1:8080/models/bbishop.js",function(geometry,materials) {
 		black[10]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		black[10].position.set(plane[2][7].position.x,plane[2][7].position.y,plane[2][7].position.z);
-		black[10].scale.set(0.7,0.7,0.7);
+		black[10].scale.set(0.7,0.8,0.7);
 		black[10].id="b2b";
 		black[10].name="27";
 		plane[2][7].name="-31";
@@ -297,7 +297,7 @@ function fillBoard() {
 	loader.load("http://127.0.0.1:8080/models/bbishop.js",function(geometry,materials) {
 		black[13]=new THREE.Mesh(geometry,new THREE.MeshFaceMaterial(materials));
 		black[13].position.set(plane[5][7].position.x,plane[5][7].position.y,plane[5][7].position.z);
-		black[13].scale.set(0.7,0.7,0.7);
+		black[13].scale.set(0.7,0.8,0.7);
 		black[13].id="b5b";
 		black[13].name="57";
 		plane[5][7].name="-31";
