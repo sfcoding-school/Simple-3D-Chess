@@ -32,16 +32,20 @@ function update() {
 				camera.position.x=Math.sin(change)*10;
 				camera.position.z=Math.cos(change)*10;
 				camera.lookAt(scene.position);
-			} else
+			} else {
+				rotation=Math.PI;
 				changeViewpoint=false;
+			}
 		} else {
 			if(change!=0) {
 				change-=Math.PI/8;
 				camera.position.x=Math.sin(change)*10;
 				camera.position.z=Math.cos(change)*10;
 				camera.lookAt(scene.position);
-			} else
+			} else {
+				rotation=0;
 				changeViewpoint=false;
+			}
 		}
 // Altrimenti controllo se sto ruotando a mano
 	} else {
